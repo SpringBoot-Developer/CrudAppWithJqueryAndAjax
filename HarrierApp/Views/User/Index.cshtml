@@ -1,0 +1,35 @@
+﻿@using HarrierApp.Models;
+@model List<User>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Skills</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    @foreach(var user in Model)
+    {
+        <tr>
+            <td>@user.Name</td>
+            <td>@user.Email</td>
+            <td>@user.Mobile</td>
+            <td>@string.Join(", " , user.Skills)</td>
+            <td>@user.Role</td>
+            <td>@user.Status</td>
+            <td>
+                <a href="@Url.Action("Edit", new { id = user.Id })">Edit</a> |
+                <a href="@Url.Action("Delete", new { id = user.Id })">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+<a href="@Url.Action("Add")" class="btn btn-primary">Add User</a>

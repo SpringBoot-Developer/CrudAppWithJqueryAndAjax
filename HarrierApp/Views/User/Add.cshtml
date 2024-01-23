@@ -1,0 +1,120 @@
+﻿@model HarrierApp.Models.User
+
+@{
+    ViewBag.Title = "Add User";
+}
+
+<h2>Add User</h2>
+@using(Html.BeginForm("Add" , "User" , FormMethod.Post , new { id = "userForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <style>
+        .validation-error {
+            color: red;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name , new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Name , null , new { @class = "validation-error" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email)
+        @Html.TextBoxFor(model => model.Email , new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Email , null , new { @class = "validation-error" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Mobile)
+        @Html.TextBoxFor(model => model.Mobile , new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Mobile , null , new { @class = "validation-error" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Skills)
+        <div>
+            @foreach(var skill in new[] { "C" , "Cpp" , "Java" , "Html" , "Css" , "CSharp" , "JQuery" })
+            {
+                <label class="checkbox-inline">
+                    @Html.CheckBox("Skills" , false , new { value = skill }) @skill
+                </label>
+            }
+            @Html.ValidationMessageFor(model => model.Skills , null , new { @class = "validation-error" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Role)
+        <div>
+            @foreach(var role in new[] { "User" , "Admin" , "SuperAdmin" })
+            {
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(model => model.Role , role) @role
+                </label>
+            }
+            @Html.ValidationMessageFor(model => model.Role , null , new { @class = "validation-error" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Status)
+        <div>
+            @foreach(var status in new[] { "Active" , "Inactive" })
+            {
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(model => model.Status , status) @status
+                </label>
+            }
+            @Html.ValidationMessageFor(model => model.Status , null , new { @class = "validation-error" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Password)
+        @Html.PasswordFor(model => model.Password , new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Password , null , new { @class = "validation-error" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ConfirmPassword)
+        @Html.PasswordFor(model => model.ConfirmPassword , new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ConfirmPassword , null , new { @class = "validation-error" })
+    </div>
+
+    <div class="form-group">
+        <input type="hidden" id="FilteredSkills" name="FilteredSkills" />
+    </div>
+
+    <div class="form-group">
+        <button type="button" onclick="submitForm()" class="btn btn-primary">Save</button>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+    function submitForm() {
+        // Get all checkboxes with the name 'Skills'
+        var checkboxes = document.getElementsByName('Skills');
+
+        // Filter out only checked checkboxes
+        var selectedSkills = Array.from(checkboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+
+        // Set the filtered skills as the value of the hidden input
+        document.getElementById('FilteredSkills').value = selectedSkills.join(',');
+
+        // Submit the form
+        document.getElementById('userForm').submit();
+    }
+</script>
+}
