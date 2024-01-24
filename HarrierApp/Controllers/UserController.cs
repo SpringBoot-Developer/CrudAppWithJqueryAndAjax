@@ -30,7 +30,7 @@ namespace HarrierApp.Controllers
             {
                 // Retrieve selected skills from the form data
                 user.Skills = Request.Form.GetValues(name: "Skills")?.Where(skill => skill != "false").ToList() ?? new List<string>();
-
+                Console.WriteLine("Saving Data");
                 // Add the user to the database
                 dbServices.Add(user);
 
