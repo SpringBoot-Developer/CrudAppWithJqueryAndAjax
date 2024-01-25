@@ -1,33 +1,56 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using HarrierApp.Models;
+@model List<UserDetail>
+
+@*@{
+        ViewBag.Title = "User Details";
+    }*@
+
+@{
+    ViewBag.Title = "Details";
+    ViewBag.ScreenTitle = "Details";
+    ViewBag.BodyClass = "details-background";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<h2>User Details</h2>
+<table class="table">
+ 
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
-</main>
+    <tr>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Role</th>
+        <th>Action</th>
+    </tr>
+    @if(Model != null)
+    {
+
+        foreach(var userDetail in Model)
+        {
+            <tr>
+                <td>@userDetail.Name</td>
+                <td>@userDetail.Gender</td>
+                <td>@userDetail.Role</td>
+
+                @*<td>
+                        <a href="@Url.Action("Edit", new { id = userDetail.Id })">Edit</a> |
+                        <a href="@Url.Action("Delete", new { id = userDetail.Id })">Delete</a>
+                    </td>*@
+                <td>
+                    <a href="@Url.Action("Edit", new { id = userDetail.Id })" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    |
+                    <a href="@Url.Action("Delete", new { id = userDetail.Id })" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i> Delete
+                    </a>
+                </td>
+
+            </tr>
+        }
+    }
+    else
+    {
+        <p>No user details available.</p>
+    }
+</table>
+<a href="@Url.Action("Add")" class="btn btn-primary">Add Details</a>

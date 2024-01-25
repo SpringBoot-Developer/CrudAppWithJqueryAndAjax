@@ -1,0 +1,122 @@
+﻿@model HarrierApp.Models.UserDetail
+
+@{
+    ViewBag.Title = "Add Detail";
+}
+
+<h2>Add Details</h2>
+@using(Html.BeginForm("Add" , "Home" , FormMethod.Post , new { id = "userForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <style>
+        .validation-error {
+            color: red;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name , new { @class = "form-control" })
+        <span class="validation-error" id="name"></span>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Gender)
+        <div>
+            @foreach(var gender in new[] { "Male" , "Female" , "Other" })
+            {
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(model => model.Gender , gender) @gender
+                </label>
+            }
+            <span class="validation-error" id="gender"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Role)
+        <div>
+            @foreach(var role in new[] { "User" , "Admin" , "SuperAdmin" })
+            {
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(model => model.Role , role) @role
+                </label>
+            }
+            <span class="validation-error" id="role"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="button" class="btn btn-primary">Save</button>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        $("button[type='button']").click(function () {
+             console.log('Submitting form...');
+            validateForm();
+        });
+
+        function validateForm() {
+             console.log('Validating...');
+            // Reset previous error messages
+            $(".validation-error").text("");
+
+            // Validate name
+            var name = $.trim($("#Name").val());
+            if (!name) {
+                $("#name").text("Please enter a name.");
+                return;
+            }
+            if (!/^[a-zA-Z]+$/.test(name)) {
+                $("#name").text("Please enter a valid text for the name (only letters allowed).");
+                return;
+            }
+
+
+            // Validate gender (at least one should be selected)
+            var selectedGender = $("input[name='Gender']:checked").val();
+            if (!selectedGender) {
+                $("#gender").text("Please select a gender.");
+                return;
+            }
+
+            // Validate role (at least one should be selected)
+            var selectedRole = $("input[name='Role']:checked").val();
+            if (!selectedRole) {
+                $("#role").text("Please select a role.");
+                return;
+            }
+
+            // Submit the form using AJAX
+            $.ajax({
+                 url: '@Url.Action("Add", "Home")', // Replace with your actual controller action
+                 type: 'POST',
+                 data: $("#userForm").serialize(),
+                success: function (result) {
+                 // Handle the success response
+                               console.log(result);
+                      // Redirect to the "Index" action on success
+                   window.location.href = '@Url.Action("Index", "Home")';
+
+                },
+                   error: function (error) {
+                     // Handle the error response
+                    console.log(error);
+                   }
+           });
+        }
+
+    });
+    </script>
+}

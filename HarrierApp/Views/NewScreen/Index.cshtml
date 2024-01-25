@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "New Screen";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Screen</title>
+
+    <!-- Bootstrap CSS (Assuming you're using Bootstrap) -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>New Screen</h2>
+
+        <table id="dataTable" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dummy data rows will be added dynamically -->
+            </tbody>
+        </table>
+
+        <button id="addRowBtn" class="btn btn-primary">Add Row</button>
+    </div>
+
+    <!-- Modal for editing row -->
+    <div class="modal" id="editModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Row</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="form-group">
+                            <label for="editName">Name:</label>
+                            <input type="text" class="form-control" id="editName" name="editName">
+                        </div>
+                        <div class="form-group">
+                            <label>Gender:</label>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="editMale" name="editGender" value="Male">
+                                <label class="form-check-label" for="editMale">Male</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="editFemale" name="editGender" value="Female">
+                                <label class="form-check-label" for="editFemale">Female</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editRole">Role:</label>
+                            <select class="form-control" id="editRole" name="editRole">
+                                <option value="User">User</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Super Admin">Super Admin</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="saveChangesBtn" data-dismiss="modal">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var dummyData = [
+                { Name: "Rohan", Gender: "Male", Role: "Developer" },
+            ];
+
+            // Variable to store the current index
+            var currentIndex;
+
+            // Function to add rows to the table
+            function addRows(data) {
+                var tbody = $('#dataTable tbody');
+                tbody.empty(); // Clear existing rows
+
+                $.each(data, function (index, item) {
+                    var row = '<tr>' +
+                        '<td>' + item.Name + '</td>' +
+                        '<td>' + item.Gender + '</td>' +
+                        '<td>' + item.Role + '</td>' +
+                        '<td><i class="bi bi-pencil edit-icon" data-index="' + index + '" data-toggle="modal" data-target="#editModal"></i></td>' +
+                        '</tr>';
+                    tbody.append(row);
+                });
+            }
+
+            // Initial population of the table
+            addRows(dummyData);
+
+            // Event handler for Add Row button
+            $('#addRowBtn').on('click', function () {
+                var newRow = { Name: "New Name", Gender: "New Gender", Role: "New Role" };
+                dummyData.push(newRow);
+                addRows(dummyData);
+            });
+
+            // Event delegation for dynamically added edit icons
+            $('#dataTable').on('click', '.edit-icon', function () {
+                currentIndex = $(this).data('index');
+                var rowData = dummyData[currentIndex];
+
+                // Populate the modal fields with rowData
+                $('#editName').val(rowData.Name);
+                $('input[name="editGender"][value="' + rowData.Gender + '"]').prop('checked', true);
+                $('#editRole').val(rowData.Role);
+            });
+
+            // Save changes button click event
+            $('#saveChangesBtn').on('click', function () {
+                // Update the dummyData with edited values
+                dummyData[currentIndex].Name = $('#editName').val();
+                dummyData[currentIndex].Gender = $('input[name="editGender"]:checked').val();
+                dummyData[currentIndex].Role = $('#editRole').val();
+
+                // Update the table
+                addRows(dummyData);
+
+                // Close the modal
+              //  $('#editModal').modal('hide');
+                console.log("----Close----");
+            });
+
+            // Clear modal input values when it's hidden
+            $('#editModal').on('hidden.bs.modal', function () {
+                $('#editName, #editMale, #editFemale, #editRole').val('');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -18,6 +18,17 @@ namespace HarrierApp
                 url: "{controller}/{action}/{id}" ,
                 defaults: new { controller = "User" , action = "Index" , id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+    name: "Home" ,
+    url: "Home/{action}/{id}" ,
+    defaults: new { controller = "Home" , action = "Index" , id = UrlParameter.Optional }
+);
+
+            routes.MapRoute(
+            name: "NewScreen" ,
+            url: "NewScreen/{action}" ,                                                                                                                 
+            defaults: new { controller = "NewScreen" , action = "Index" }
+        );                                                                                                                      
         }
     }
 }

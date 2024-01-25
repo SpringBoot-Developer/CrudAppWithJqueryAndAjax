@@ -43,7 +43,7 @@ public class DbServices
         catch(Exception ex)
         {
             Console.WriteLine($"Error adding user: {ex.Message}");
-       
+
             return false;
         }
     }
@@ -70,7 +70,7 @@ public class DbServices
                             Name = reader.GetString(reader.GetOrdinal("Name")) ,
                             Email = reader.GetString(reader.GetOrdinal("Email")) ,
                             Mobile = reader.GetString(reader.GetOrdinal("Mobile")) ,
-                            Skills = reader.GetString(reader.GetOrdinal("Skills")).Split(',').ToList() , 
+                            Skills = reader.GetString(reader.GetOrdinal("Skills")).Split(',').ToList() ,
                             Role = reader.GetString(reader.GetOrdinal("Role")) ,
                             Status = reader.GetString(reader.GetOrdinal("Status"))
                         };
@@ -132,7 +132,7 @@ public class DbServices
                     cmd.Parameters.AddWithValue("@Name" , obj.Name);
                     cmd.Parameters.AddWithValue("@Email" , obj.Email);
                     cmd.Parameters.AddWithValue("@Mobile" , obj.Mobile);
-                    cmd.Parameters.AddWithValue("@Skills" , string.Join("," , obj.Skills)); 
+                    cmd.Parameters.AddWithValue("@Skills" , string.Join("," , obj.Skills));
                     cmd.Parameters.AddWithValue("@Role" , obj.Role);
                     cmd.Parameters.AddWithValue("@Status" , obj.Status);
 
@@ -148,5 +148,132 @@ public class DbServices
             return false;
         }
     }
+    //--------------------------------
 
+
+    public bool AddUserDetail(UserDetail obj)
+    {
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string insertQuery = "INSERT INTO UserDetails (Name, Gender, Role) \r\nVALUES (@Name, @Gender, @Role)";
+
+                using(SqlCommand cmd = new SqlCommand(insertQuery , connection))
+                {
+                    cmd.Parameters.AddWithValue("@Name" , obj.Name);
+                    cmd.Parameters.AddWithValue("@Gender" , obj.Gender);
+                    cmd.Parameters.AddWithValue("@Role" , obj.Role);
+           
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    return rowsAffected > 0;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error adding userDetail: {ex.Message}");
+
+            return false;
+        }
+    }
+    public List<UserDetail> GetAllUserDetail()
+    {
+        List<UserDetail> users = new List<UserDetail>();
+
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string selectQuery = "SELECT Id, Name, Gender, Role FROM UserDetails";
+
+                using(SqlCommand cmd = new SqlCommand(selectQuery , connection))
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        UserDetail user = new UserDetail
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")) ,
+                            Name = reader.GetString(reader.GetOrdinal("Name")) ,
+                            Gender = reader.GetString(reader.GetOrdinal("Gender")) ,
+                            Role = reader.GetString(reader.GetOrdinal("Role")) 
+                        };
+
+                        users.Add(user);
+                    }
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error getting usersDetail {ex.Message}");
+        }
+
+        return users;
+    }
+
+
+
+    public bool DeleteUserDetail(UserDetail obj)
+    {
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string deleteQuery = "DELETE FROM UserDetails WHERE Id = @Id";
+
+                using(SqlCommand cmd = new SqlCommand(deleteQuery , connection))
+                {
+                    cmd.Parameters.AddWithValue("@Id" , obj.Id);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    return rowsAffected > 0;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error deleting userDetail: {ex.Message}");
+            return false;
+        }
+    }
+    public bool UpdateUserDetail(UserDetail obj)
+    {
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string updateQuery = "UPDATE UserDetails SET Name = @Name, Gender = @Gender, Role = @Role WHERE Id = @Id";
+
+                using(SqlCommand cmd = new SqlCommand(updateQuery , connection))
+                {
+                    cmd.Parameters.AddWithValue("@Id" , obj.Id);
+                    cmd.Parameters.AddWithValue("@Name" , obj.Name);
+                    cmd.Parameters.AddWithValue("@Gender" , obj.Gender);
+                    cmd.Parameters.AddWithValue("@Role" , obj.Role);
+
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    return rowsAffected > 0;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error updating userDetail: {ex.Message}");
+            return false;
+        }
+    }
 }
