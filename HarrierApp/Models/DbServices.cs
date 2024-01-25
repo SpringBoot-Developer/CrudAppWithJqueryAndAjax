@@ -11,6 +11,156 @@ public class DbServices
     private readonly string connectionString = ConfigurationManager.ConnectionStrings["dbconfig"].ConnectionString;
 
 
+    //---------Login----------
+
+    public bool AddUser(UserModel obj)
+    {
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string insertQuery = "INSERT INTO LoginUser (Name, Email, Password) \r\nVALUES (@Name, @Email,@Password)";
+
+                using(SqlCommand cmd = new SqlCommand(insertQuery , connection))
+                {
+                    cmd.Parameters.AddWithValue("@Name" , obj.Name);
+                    cmd.Parameters.AddWithValue("@Email" , obj.Email);
+                    cmd.Parameters.AddWithValue("@Password" , obj.Password);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    return rowsAffected > 0;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error adding user: {ex.Message}");
+
+            return false;
+        }
+    }
+
+
+    public List<UserModel> GetUser()
+    {
+        List<UserModel> users = new List<UserModel>();
+
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string selectQuery = "SELECT * FROM LoginUser";
+
+                using(SqlCommand cmd = new SqlCommand(selectQuery , connection))
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        UserModel user = new UserModel
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")) ,
+                            Name = reader.GetString(reader.GetOrdinal("Name")) ,
+                            Email = reader.GetString(reader.GetOrdinal("Email")) ,
+                            Password = reader.GetString(reader.GetOrdinal("Password")) ,
+                       
+                        };
+
+                        users.Add(user);
+                    }
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error getting users: {ex.Message}");
+        }
+
+        return users;
+    }
+
+
+    public List<UserModel> GetUserByEmail(string email)
+    {
+        List<UserModel> users = new List<UserModel>();
+
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string selectQuery = "SELECT * FROM LoginUser WHERE Email=@Email";
+
+                using(SqlCommand cmd = new SqlCommand(selectQuery , connection))
+                {
+                    // Use SqlParameter to avoid SQL injection
+                    cmd.Parameters.AddWithValue("@Email" , email);
+
+                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while(reader.Read())
+                        {
+                            UserModel user = new UserModel
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")) ,
+                                Name = reader.GetString(reader.GetOrdinal("Name")) ,
+                                Email = reader.GetString(reader.GetOrdinal("Email")) ,
+                                Password = reader.GetString(reader.GetOrdinal("Password"))
+                            };
+
+                            users.Add(user);
+                        }
+                    }
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            // Handle exceptions here
+            Console.WriteLine("Error: " + ex.Message);
+        }
+
+        return users;
+    }
+
+    public bool UpdateUser(UserModel obj)
+    {
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string updateQuery = "UPDATE LoginUser SET Name = @Name, Email = @Email, Password = @Password WHERE Id = @Id";
+
+                using(SqlCommand cmd = new SqlCommand(updateQuery , connection))
+                {
+                    cmd.Parameters.AddWithValue("@Id" , obj.Id);
+                    cmd.Parameters.AddWithValue("@Name" , obj.Name);
+                    cmd.Parameters.AddWithValue("@Email" , obj.Email);
+                    cmd.Parameters.AddWithValue("@Password" , obj.Password);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    return rowsAffected > 0;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error adding user: {ex.Message}");
+
+            return false;
+        }
+    }
+
+
+    //------------------------------------------
 
     public bool Add(User obj)
     {
@@ -88,8 +238,6 @@ public class DbServices
         return users;
     }
 
-
-
     public bool Delete(User obj)
     {
         try
@@ -148,6 +296,8 @@ public class DbServices
             return false;
         }
     }
+
+
     //--------------------------------
 
 
@@ -217,8 +367,6 @@ public class DbServices
 
         return users;
     }
-
-
 
     public bool DeleteUserDetail(UserDetail obj)
     {

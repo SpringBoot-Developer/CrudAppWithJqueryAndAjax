@@ -224,12 +224,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NewScreenController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserPanelController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DbServices.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserDetail.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -290,6 +292,10 @@
     <Content Include="Views\Home\Delete.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\NewScreen\Index.cshtml" />
+    <Content Include="Views\UserPanel\Login.cshtml" />
+    <Content Include="Views\UserPanel\Welcome.cshtml" />
+    <Content Include="Views\UserPanel\Create.cshtml" />
+    <Content Include="Views\UserPanel\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
