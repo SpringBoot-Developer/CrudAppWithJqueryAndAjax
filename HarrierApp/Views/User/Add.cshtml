@@ -113,86 +113,78 @@
             // Reset previous error messages
             $(".validation-error").text("");
 
-
-           // var checkboxes = document.getElementsByName('Skills');
-           // $("#Skills:checked").length;
-           // alert($("#Skills:checked").length);
-          //  return false;
-
-
             // Validate name
-            var name = $.trim($("#Name").val());
-            if (!name) {
+            var Name = $.trim($("#Name").val());
+            if (!Name) {
                 $("#name").text("Please enter a name.");
                 return;
             }
-            if (!/^[a-zA-Z]+$/.test(name)) {
+            if (!/^[a-zA-Z]+$/.test(Name)) {
                 $("#name").text("Please enter a valid text for the name (only letters allowed).");
                 return;
             }
 
             // Validate email
-            var email = $.trim($("#Email").val());
-            if (!email) {
+            var Email = $.trim($("#Email").val());
+            if (!Email) {
                 $("#email").text("Please enter an email address.");
                 return;
             }
-            var emailRegex = /^[^\s]+[^\s]+\.[^\s]+$/;
-            if (!emailRegex.test(email)) {
+            var EmailRegex = /^[^\s]+[^\s]+\.[^\s]+$/;
+            if (!EmailRegex.test(Email)) {
                 $("#email").text("Please enter a valid email address.");
                 return;
             }
 
             // Validate number
-            var number = $.trim($("#Mobile").val());
-            if (!number) {
+            var Number = $.trim($("#Mobile").val());
+            if (!Number) {
                 $("#mobile").text("Please enter a mobile number.");
                 return;
             }
-            if (!$.isNumeric(number) || number.length !== 10) {
+            if (!$.isNumeric(Number) || Number.length !== 10) {
                 $("#mobile").text("Please enter a valid 10-digit mobile number.");
                 return;
             }
 
              // Validate skills (at least 2 should be selected)
-           
             if ($("#Skills:checked").length < 2) {
                 $("#skill").text("Please select at least 2 skills.");
                 return;
             }
 
             // Validate role (at least one should be selected)
-            var selectedRole = $("input[name='Role']:checked").val();
-            if (!selectedRole) {
+            var SelectedRole = $("input[name='Role']:checked").val();
+            if (!SelectedRole) {
                 $("#role").text("Please select a role.");
                 return;
             }
 
             // Validate status (at least one should be selected)
-            var selectedStatus = $("input[name='Status']:checked").val();
-            if (!selectedStatus) {
+            var SelectedStatus = $("input[name='Status']:checked").val();
+            if (!SelectedStatus) {
                 $("#status").text("Please select a status.");
                 return;
             }
 
             // Validate password (at least 4 characters and should contain a mix of uppercase, lowercase, and digits)
-            var password = $.trim($("#Password").val());
-            if (!password) {
+            var Password = $.trim($("#Password").val());
+            if (!Password) {
                 $("#pass").text("Please enter a password.");
                 return;
             }
-            if (password.length < 4 || !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,}/.test(password)) {
+            if (Password.length < 4 || !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{4,}/.test(Password)) {
                 $("#pass").text("Password should have at least 4 characters and contain a mix of uppercase, lowercase, and digits.");
                 return;
             }
 
             // Validate confirm password (should match the password)
-            var confirmPassword = $.trim($("#ConfirmPassword").val());
-            if (!confirmPassword) {
+            var ConfirmPassword = $.trim($("#ConfirmPassword").val());
+            if (!ConfirmPassword) {
                 $("#confpass").text("Please confirm the password.");
                 return;
             }
-            if (confirmPassword !== password) {
+            if (ConfirmPassword !== Password) {
                 $("#confpass").text("Passwords do not match.");
                 return;
             }
@@ -202,32 +194,15 @@
         }
 
         function submitForm() {
-             console.log('Submitting DATA');
-            // Get all checkboxes with the name 'Skills'
-            var checkboxes = document.getElementsByName('Skills');
-
-            // Filter out only checked checkboxes
-            var selectedSkills = Array.from(checkboxes)
-                .filter(checkbox => checkbox.checked)
-                .map(checkbox => checkbox.value);
-
-            // Set the filtered skills as the value of the hidden input
-            document.getElementById('FilteredSkills').value = selectedSkills.join(',');
-
-            // Submit the form using AJAX
+             console.log('Submitting Data');
             $.ajax({
-                url: '@Url.Action("Add", "User")', // Replace with your actual controller action
+                url: '@Url.Action("Add", "User")', 
                 type: 'POST',
                 data: $("#userForm").serialize(),
                 success: function (result) {
-                    // Handle the success response
-                    console.log(result);
-                      // Redirect to the "Index" action on success
                    window.location.href = '@Url.Action("Index", "User")';
-
                 },
                 error: function (error) {
-                    // Handle the error response
                     console.log(error);
                 }
             });
