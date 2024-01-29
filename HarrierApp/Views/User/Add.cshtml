@@ -113,6 +113,13 @@
             // Reset previous error messages
             $(".validation-error").text("");
 
+
+           // var checkboxes = document.getElementsByName('Skills');
+           // $("#Skills:checked").length;
+           // alert($("#Skills:checked").length);
+          //  return false;
+
+
             // Validate name
             var name = $.trim($("#Name").val());
             if (!name) {
@@ -147,13 +154,9 @@
                 return;
             }
 
-            // Validate skills (at least 2 should be selected)
-            var checkboxes = document.getElementsByName('Skills');
-            var selectedSkills = Array.from(checkboxes)
-                .filter(checkbox => checkbox.checked)
-                .map(checkbox => checkbox.value);
-
-            if (selectedSkills.length < 2) {
+             // Validate skills (at least 2 should be selected)
+           
+            if ($("#Skills:checked").length < 2) {
                 $("#skill").text("Please select at least 2 skills.");
                 return;
             }

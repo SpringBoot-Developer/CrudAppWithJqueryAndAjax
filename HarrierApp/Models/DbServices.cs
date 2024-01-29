@@ -11,6 +11,119 @@ public class DbServices
     private readonly string connectionString = ConfigurationManager.ConnectionStrings["dbconfig"].ConnectionString;
 
 
+
+    // UserAuth
+    public bool AddUserAuth(UserAuth obj)
+    {
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string insertQuery = "INSERT INTO UserAuth (UserName, Email, Password, IsValid) VALUES (@UserName, @Email, @Password, @IsValid)";
+
+                using(SqlCommand cmd = new SqlCommand(insertQuery , connection))
+                {
+                    cmd.Parameters.AddWithValue("@UserName" , obj.UserName);
+                    cmd.Parameters.AddWithValue("@Email" , obj.Email);
+                    cmd.Parameters.AddWithValue("@Password" , obj.Password);
+                    cmd.Parameters.AddWithValue("@IsValid" , false); ;
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    return rowsAffected > 0;
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error adding user: {ex.Message}");
+
+            return false;
+        }
+    }
+
+  public UserAuth GetUserById(int userId)
+{
+    UserAuth user = null;
+
+    try
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string selectQuery = "SELECT Id, UserName, Email, Password, IsValid FROM UserAuth WHERE Id = @UserId";
+
+            using (SqlCommand cmd = new SqlCommand(selectQuery, connection))
+            {
+                cmd.Parameters.AddWithValue("@UserId", userId);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        user = new UserAuth
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            UserName = reader.GetString(reader.GetOrdinal("UserName")),
+                            Email = reader.GetString(reader.GetOrdinal("Email")),
+                            Password = reader.GetString(reader.GetOrdinal("Password")),
+                            IsValid = reader.GetBoolean(reader.GetOrdinal("IsValid"))
+                        };
+                    }
+                }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error getting user: {ex.Message}");
+    }
+
+    return user;
+}
+
+    public List<UserAuth> GetAllUserAuth()
+    {
+        List<UserAuth> users = new List<UserAuth>();
+
+        try
+        {
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string selectQuery = "SELECT Id, UserName, Email, Password, IsValid FROM UserAuth";
+
+                using(SqlCommand cmd = new SqlCommand(selectQuery , connection))
+                using(SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        UserAuth user = new UserAuth
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")) ,
+                            UserName = reader.GetString(reader.GetOrdinal("UserName")) ,
+                            Email = reader.GetString(reader.GetOrdinal("Email")) ,
+                            Password = reader.GetString(reader.GetOrdinal("Password")) ,
+                            IsValid = reader.GetBoolean(reader.GetOrdinal("IsValid"))
+                        };
+
+                        users.Add(user);
+                    }
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error getting users: {ex.Message}");
+        }
+
+        return users;
+    }
+
     //---------Login----------
 
     public bool AddUser(UserModel obj)

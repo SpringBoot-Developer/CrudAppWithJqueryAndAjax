@@ -223,6 +223,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NewScreenController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserPanelController.cs" />
     <Compile Include="Global.asax.cs">
@@ -230,6 +231,7 @@
     </Compile>
     <Compile Include="Models\DbServices.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserAuth.cs" />
     <Compile Include="Models\UserDetail.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -261,6 +263,7 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="EmailTemplate\Text.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -296,6 +299,9 @@
     <Content Include="Views\UserPanel\Welcome.cshtml" />
     <Content Include="Views\UserPanel\Create.cshtml" />
     <Content Include="Views\UserPanel\Edit.cshtml" />
+    <Content Include="Views\Register\Index.cshtml" />
+    <Content Include="Views\Register\Confirm.cshtml" />
+    <Content Include="Views\Register\AfterLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

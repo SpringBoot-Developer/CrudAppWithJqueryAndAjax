@@ -20,6 +20,12 @@ namespace HarrierApp
                defaults: new { controller = "UserPanel" , action = "Login" , id = UrlParameter.Optional }
            );
 
+          /*  routes.MapRoute(
+              name: "Default" ,
+              url: "{controller}/{action}/{id}" ,
+              defaults: new { controller = "Register" , action = "Index" , id = UrlParameter.Optional }
+          );
+*/
         }
     }
 }
