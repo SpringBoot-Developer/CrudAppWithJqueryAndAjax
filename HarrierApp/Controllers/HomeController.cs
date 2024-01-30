@@ -24,10 +24,11 @@ namespace HarrierApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(UserDetail user)
+        public ActionResult Add(UserDetailModel user)
         {
             if(ModelState.IsValid)
             {
+
                 Console.WriteLine("Saving Data");
                 // Add the user to the database
                 dbServices.AddUserDetail(user);
@@ -51,7 +52,7 @@ namespace HarrierApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(UserDetail user)
+        public ActionResult Edit(UserDetailModel user)
         {
 
             dbServices.UpdateUserDetail (user);
@@ -61,7 +62,7 @@ namespace HarrierApp.Controllers
         public ActionResult Delete(int id)
         {
             Console.WriteLine("Delete");
-            UserDetail user = dbServices.GetAllUserDetail().Find(model => model.Id == id);
+            UserDetailModel user = dbServices.GetAllUserDetail().Find(model => model.Id == id);
             if(user == null)
             {
                 return HttpNotFound();
@@ -70,7 +71,7 @@ namespace HarrierApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(UserDetail user)
+        public ActionResult Delete(UserDetailModel user)
         {
             Console.WriteLine("Delete..");
             dbServices.DeleteUserDetail(user);

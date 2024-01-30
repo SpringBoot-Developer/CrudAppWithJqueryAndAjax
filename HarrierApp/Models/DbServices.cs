@@ -13,7 +13,7 @@ public class DbServices
 
 
     // UserAuth
-    public bool AddUserAuth(UserAuth obj)
+    public bool AddUserAuth(UserAuthModel obj)
     {
         try
         {
@@ -44,9 +44,9 @@ public class DbServices
         }
     }
 
-  public UserAuth GetUserById(int userId)
+  public UserAuthModel GetUserById(int userId)
 {
-    UserAuth user = null;
+    UserAuthModel user = null;
 
     try
     {
@@ -64,7 +64,7 @@ public class DbServices
                 {
                     if (reader.Read())
                     {
-                        user = new UserAuth
+                        user = new UserAuthModel
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             UserName = reader.GetString(reader.GetOrdinal("UserName")),
@@ -85,9 +85,9 @@ public class DbServices
     return user;
 }
 
-    public List<UserAuth> GetAllUserAuth()
+    public List<UserAuthModel> GetAllUserAuth()
     {
-        List<UserAuth> users = new List<UserAuth>();
+        List<UserAuthModel> users = new List<UserAuthModel>();
 
         try
         {
@@ -102,7 +102,7 @@ public class DbServices
                 {
                     while(reader.Read())
                     {
-                        UserAuth user = new UserAuth
+                        UserAuthModel user = new UserAuthModel
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")) ,
                             UserName = reader.GetString(reader.GetOrdinal("UserName")) ,
@@ -275,7 +275,7 @@ public class DbServices
 
     //------------------------------------------
 
-    public bool Add(User obj)
+    public bool Add(UsersModel obj)
     {
         try
         {
@@ -310,9 +310,9 @@ public class DbServices
             return false;
         }
     }
-    public List<User> GetAll()
+    public List<UsersModel> GetAll()
     {
-        List<User> users = new List<User>();
+        List<UsersModel> users = new List<UsersModel>();
 
         try
         {
@@ -327,7 +327,7 @@ public class DbServices
                 {
                     while(reader.Read())
                     {
-                        User user = new User
+                        UsersModel user = new UsersModel
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")) ,
                             Name = reader.GetString(reader.GetOrdinal("Name")) ,
@@ -351,7 +351,7 @@ public class DbServices
         return users;
     }
 
-    public bool Delete(User obj)
+    public bool Delete(UsersModel obj)
     {
         try
         {
@@ -377,7 +377,7 @@ public class DbServices
             return false;
         }
     }
-    public bool Update(User obj)
+    public bool Update(UsersModel obj)
     {
         try
         {
@@ -414,7 +414,7 @@ public class DbServices
     //--------------------------------
 
 
-    public bool AddUserDetail(UserDetail obj)
+    public bool AddUserDetail(UserDetailModel obj)
     {
         try
         {
@@ -443,9 +443,9 @@ public class DbServices
             return false;
         }
     }
-    public List<UserDetail> GetAllUserDetail()
+    public List<UserDetailModel> GetAllUserDetail()
     {
-        List<UserDetail> users = new List<UserDetail>();
+        List<UserDetailModel> users = new List<UserDetailModel>();
 
         try
         {
@@ -460,7 +460,7 @@ public class DbServices
                 {
                     while(reader.Read())
                     {
-                        UserDetail user = new UserDetail
+                        UserDetailModel user = new UserDetailModel
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")) ,
                             Name = reader.GetString(reader.GetOrdinal("Name")) ,
@@ -481,7 +481,7 @@ public class DbServices
         return users;
     }
 
-    public bool DeleteUserDetail(UserDetail obj)
+    public bool DeleteUserDetail(UserDetailModel obj)
     {
         try
         {
@@ -507,7 +507,7 @@ public class DbServices
             return false;
         }
     }
-    public bool UpdateUserDetail(UserDetail obj)
+    public bool UpdateUserDetail(UserDetailModel obj)
     {
         try
         {

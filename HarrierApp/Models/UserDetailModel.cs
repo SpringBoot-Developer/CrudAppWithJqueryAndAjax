@@ -5,7 +5,7 @@ using System.Web;
 
 namespace HarrierApp.Models
 {
-    public class UserDetail
+    public class UserDetailModel
     {
 
         public int Id { get; set; }

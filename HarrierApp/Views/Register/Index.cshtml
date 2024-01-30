@@ -155,21 +155,21 @@
 
     function SaveForm() {
 
-        var name = $('#user').val();
-        var email = $('#Email').val();
-        var pass = $('#Password').val();
+        var Name = $('#user').val();
+        var Email = $('#Email').val();
+        var Pass = $('#Password').val();
 
-        if (name == "" || email == "" || pass == "") {
+        if (Name == "" || Email == "" || Pass == "") {
             console.log("----");
             $('#message1').hide();
             $('#message2').show();
             return false;
         }
 
-        var data = $('#Registration').serialize();
+        var Data = $('#Registration').serialize();
         $.ajax({
             type: "post",
-            data: data,
+            data: Data,
             url: "/Register/SaveData",
             success: function (result) {
                 //  alert(result);
@@ -260,11 +260,11 @@
     console.log("Hide Msg");
 
     var Login = function () {
-        var data = $("#loginForm").serialize();
+        var Data = $("#loginForm").serialize();
         $.ajax({
             type: "post",
             url: "/Register/CheckValidUser",
-            data: data,
+            data: Data,
             success: function (result) {
                 if (result == "Fail") {
                     $("#loginForm")[0].reset();

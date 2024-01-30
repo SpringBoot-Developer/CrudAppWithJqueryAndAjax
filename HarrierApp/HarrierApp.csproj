@@ -233,9 +233,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DbServices.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UserAuth.cs" />
-    <Compile Include="Models\UserDetail.cs" />
+    <Compile Include="Models\UsersModel.cs" />
+    <Compile Include="Models\UserAuthModel.cs" />
+    <Compile Include="Models\UserDetailModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

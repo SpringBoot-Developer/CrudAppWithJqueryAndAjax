@@ -12,8 +12,8 @@ namespace HarrierApp.Controllers
 
     public class UserController : Controller
     {
-     
-  
+
+
         DbServices dbServices = new DbServices();
 
         public ActionResult Index()
@@ -27,7 +27,7 @@ namespace HarrierApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(User user)
+        public ActionResult Add(UsersModel user)
         {
             try
             {
@@ -44,47 +44,80 @@ namespace HarrierApp.Controllers
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                ModelState.AddModelError(string.Empty , "An error occurred while processing your request.");
-                return View(user);
+                Console.WriteLine($"Exception: {ex.Message}");
+                return View();
+
             }
         }
 
-    public ActionResult Edit(int id)
-    {
-        var user = dbServices.GetAll().Find(model => model.Id == id);
-        if(user == null)
+        public ActionResult Edit(int id)
         {
-            return HttpNotFound();
+            try
+            {
+                var user = dbServices.GetAll().Find(model => model.Id == id);
+                if(user == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(user);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                return View();
+            }
         }
-        return View(user);
-    }
 
-    [HttpPost]
-    public ActionResult Edit(User user)
-    {
-        user.Skills = Request.Form.GetValues(name: "Skills")?.Where(skill => skill != "false").ToList() ?? new List<string>();
-
-        dbServices.Update(user);
-        return RedirectToAction("Index");
-    }
-
-    public ActionResult Delete(int id)
-    {
-        User user = dbServices.GetAll().Find(model => model.Id == id);
-        if(user == null)
+        [HttpPost]
+        public ActionResult Edit(UsersModel user)
         {
-            return HttpNotFound();
+            try
+            {
+                user.Skills = Request.Form.GetValues(name: "Skills")?.Where(skill => skill != "false").ToList() ?? new List<string>();
+                dbServices.Update(user);
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                return View();
+            }
         }
-        return View(user);
-    }
 
-    [HttpPost]
-    public ActionResult Delete(User user)
-    {
-        dbServices.Delete(user);
-        return RedirectToAction("Index");
+
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                UsersModel user = dbServices.GetAll().Find(model => model.Id == id);
+                if(user == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(user);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                return View();
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Delete(UsersModel user)
+        {
+            try
+            {
+                dbServices.Delete(user);
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+                return View();
+            }
+        }
+
     }
-}
 
 }
